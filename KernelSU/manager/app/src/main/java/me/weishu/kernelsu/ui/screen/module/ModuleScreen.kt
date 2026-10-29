@@ -155,12 +155,16 @@ fun ModulePager(
             viewModel.toggleSortEnabledFirst()
         },
         onOpenWebUi = { module ->
-            webUILauncher.launch(
-                Intent(context, WebUIActivity::class.java)
-                    .setData(
-                        Shortcut.buildShortcutUri(module.id, ShortcutType.WebUI)
-                    )
-            )
+            try {
+                webUILauncher.launch(
+                    Intent(context, WebUIActivity::class.java)
+                        .setData(
+                            Shortcut.buildShortcutUri(module.id, ShortcutType.WebUI)
+                        )
+                )
+            } catch (e: Exception) {
+                android.widget.Toast.makeText(context, e.message ?: "Failed to launch WebUI", android.widget.Toast.LENGTH_SHORT).show()
+            }
         },
         onToggleModule = { module ->
             viewModel.toggleModule(module)

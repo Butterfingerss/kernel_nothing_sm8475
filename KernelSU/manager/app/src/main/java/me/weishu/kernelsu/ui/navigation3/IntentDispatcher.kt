@@ -199,7 +199,11 @@ fun IntentDispatcher(intentChannel: ReceiveChannel<Intent>) {
             is PendingAction.OpenWebUI -> {
                 val webIntent = Intent(context, WebUIActivity::class.java)
                     .setData(buildInternalWebUiUri(action.moduleId))
-                context.startActivity(webIntent)
+                try {
+                    context.startActivity(webIntent)
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message ?: "Failed to launch WebUI", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
